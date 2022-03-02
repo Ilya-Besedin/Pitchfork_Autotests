@@ -1,0 +1,8 @@
+Checking genre filter in News
+1) Open https://pitchfork.com/
+2) On Nav bar click News
+3) Click Genres
+4) In pop-up click "Clear All Selected"
+5) fill checkbox "Jazz"
+6) In pop-up click "Update All"
+ER: pop-up closes, page refreshes, showing news about jazz music, field "Showing:" has tag "jazz"
