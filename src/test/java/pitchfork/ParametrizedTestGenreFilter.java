@@ -1,19 +1,18 @@
 package pitchfork;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Selenide.$;
 
-public class ParametrizedTest {
+public class ParametrizedTestGenreFilter {
 
     //locators
     SelenideElement navBar = $("li.primary-nav__item");
@@ -32,15 +31,16 @@ public class ParametrizedTest {
         closeWebDriver();
     }
 
-    @Test
-    @DisplayName("Checking genre filter in News")
-        void setGenreFilterTest() {
+    @ValueSource (strings = {"Jazz", "Electronic", "Rap/Hip-Hop", "Metal"})
+    @ParameterizedTest (name = "Checking \"{0}\" filter in News")
+    //@DisplayName("Checking genre filter in News") - mover to @ParameterizedTest
+        void setGenreFilterTest(String genre) {
         navBar.$("a").click();
         genreTrigger.click();
         genreMenu.$(".genre-menu__clear").click();
-        genreMenu.$(byText("Jazz")).click();
+        genreMenu.$(byText(genre)).click();
         genreMenu.$(byText("Update Results")).click();
-        genreFilterList.shouldHave(text("Jazz"));
+        genreFilterList.shouldHave(text(genre));
     }
 }
 
