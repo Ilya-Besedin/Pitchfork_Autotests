@@ -8,24 +8,23 @@ import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.Selenide.$;
 
 public class ParametrizedTest {
 
     @BeforeEach
-        void precondition() {
+    void precondition() {
         Configuration.browserSize = "1280x800";
         open("https://pitchfork.com/");
     }
 
     @AfterEach
-        void closeBrowser () {
+    void closeBrowser() {
         closeWebDriver();
     }
 
     @Test
     @DisplayName("Checking genre filter in News")
-        void setGenreFilterTest() {
+    void setGenreFilterTest() {
         $("li.primary-nav__item").$("a").click();
         $(".genre-menu__trigger").click();
         $(".genre-menu__hanging").$(".genre-menu__clear").click();
