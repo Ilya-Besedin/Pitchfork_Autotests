@@ -1,12 +1,12 @@
 Checking genre filter in News
 
-Test Data
-- "Jazz"
-- "Electronic"
-- "Rap/Hip-Hop"
-- "Metal"
+Test Data (genre| article):
+ - "Jazz| Kamasi Washington Shares New Song “The Garden Path”: Listen",
+ - "Electronic| Watch LCD Soundsystem Perform “Thrills” and “Yr City’s a Sucker” on",
+ - "Rap/Hip-Hop| Dave Shares Video for New Song “Starlight”: Watch",
+ - "Metal| Rage Against the Machine Delay Start of Reunion Tour",
 
-Case:
+Case 1:
 1) Open https://pitchfork.com/
 2) On Nav bar click News
 3) Click Genres
@@ -14,3 +14,12 @@ Case:
 5) Fill genre checkbox
 6) In pop-up click "Update All"
 ER: pop-up closes, page refreshes, showing news about jazz music, field "Showing:" has selected genre tag
+
+Case 2:
+1) Open https://pitchfork.com/
+2) On Nav bar click News
+3) Click Genres
+4) In pop-up click "Clear All Selected"
+5) Fill genre checkbox
+6) In pop-up click "Update All"
+ER: pop-up closes, page refreshes and contains articles about the selected genre
