@@ -4,7 +4,9 @@ import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -24,22 +26,28 @@ public class ParametrizedTestGenreFilter {
     SelenideElement genreFilterList = $("ul.genre-filters__list");
     ElementsCollection genreFilterNews = $$(".news-collection-fragment");
 
-    @BeforeEach
-        void precondition() {
+    @BeforeAll
+    static void browserConfig() {
         Configuration.browserSize = "1280x800";
+        Configuration.pageLoadTimeout = 20000;
+        Configuration.pageLoadStrategy = "eager";
+    }
+
+    @BeforeEach
+    void precondition() {
         open("https://pitchfork.com/");
     }
 
     @AfterEach
-        void closeBrowser () {
+    void closeBrowser() {
         closeWebDriver();
     }
 
-    @ValueSource (strings = {"Jazz", "Electronic", "Rap/Hip-Hop", "Metal"})
-    @ParameterizedTest (name = "Checking set \"{0}\" filter in News")
-    //@Disabled
-    //@DisplayName("Checking genre filter in News") - mover to @ParameterizedTest
-        void setGenreFilterTest(String genre) {
+    @ValueSource(strings = {"Jazz", "Electronic", "Rap/Hip-Hop", "Metal"})
+    @ParameterizedTest(name = "Checking set \"{0}\" filter in News")
+    @Disabled
+        //@DisplayName("Checking genre filter in News") - mover to @ParameterizedTest
+    void setGenreFilterTest(String genre) {
         navBar.$("a").click();
         genreTrigger.click();
         genreMenu.$(".genre-menu__clear").click();
@@ -48,7 +56,7 @@ public class ParametrizedTestGenreFilter {
         genreFilterList.shouldHave(text(genre));
     }
 
-    @CsvSource (value = {
+    @CsvSource(value = {
             "Jazz| Kamasi Washington Shares New Song “The Garden Path”: Listen",
             "Electronic| Watch LCD Soundsystem Perform “Thrills” and “Yr City’s a Sucker” on",
             "Rap/Hip-Hop| Dave Shares Video for New Song “Starlight”: Watch",
@@ -56,7 +64,7 @@ public class ParametrizedTestGenreFilter {
     },
             delimiter = '|' //change separator ',' to '|'
     )
-    @ParameterizedTest (name = "Checking news list by \"{0}\" filter")
+    @ParameterizedTest(name = "Checking news list by \"{0}\" filter")
         //@DisplayName("Checking genre filter in News") - mover to @ParameterizedTest
     void checkGenreFilterContent(String genre, String expectedTest) {
         navBar.$("a").click();
