@@ -8,8 +8,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import java.util.stream.Stream;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
@@ -25,6 +29,7 @@ public class ParametrizedTestGenreFilter {
     SelenideElement genreMenu = $(".genre-menu__hanging");
     SelenideElement genreFilterList = $("ul.genre-filters__list");
     ElementsCollection genreFilterNews = $$(".news-collection-fragment");
+    ElementsCollection genreFilterTopNews = $$(".container-fluid");
 
     @BeforeAll
     static void browserConfig() {
@@ -65,6 +70,7 @@ public class ParametrizedTestGenreFilter {
             delimiter = '|' //change separator ',' to '|'
     )
     @ParameterizedTest(name = "Checking news list by \"{0}\" filter")
+    @Disabled
         //@DisplayName("Checking genre filter in News") - mover to @ParameterizedTest
     void checkGenreFilterContent(String genre, String expectedTest) {
         navBar.$("a").click();
@@ -75,6 +81,24 @@ public class ParametrizedTestGenreFilter {
         genreFilterNews.findBy(text(expectedTest)).shouldBe(visible);
     }
 
+    static Stream<Arguments> testWithArgumentsData() {
+        return Stream.of(
+                Arguments.of("Jazz", "Kamasi Washington Shares New Song “The Garden Path”: Listen", "Nubya Garcia Announces 2022 U.S. Tour"),
+                Arguments.of("Metal", "Rage Against the Machine Delay Start of Reunion Tour", "Marilyn Manson Sues Evan Rachel Wood for Defamation")
+        );
+    }
+
+    @MethodSource(value = "testWithArgumentsData") //can be written like @MethodSource ("testWithArgumentsData()"
+    @ParameterizedTest
+    void testWithArguments(String genre, String firstNews, String secondNews) {
+        navBar.$("a").click();
+        genreTrigger.click();
+        genreMenu.$(".genre-menu__clear").click();
+        genreMenu.$(byText(genre)).click();
+        genreMenu.$(byText("Update Results")).click();
+        genreFilterNews.findBy(text(firstNews)).shouldBe(visible);
+        genreFilterTopNews.findBy(text(secondNews)).shouldBe(visible);
+    }
 }
 
 
