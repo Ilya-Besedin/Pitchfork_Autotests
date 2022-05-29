@@ -7,7 +7,7 @@ Test Data (genre| article):
  - "Metal| Rage Against the Machine Delay Start of Reunion Tour",
 
 Case 1:
-1) Open https://pitchfork.com/
+1) Open page
 2) On Nav bar click News
 3) Click Genres
 4) In pop-up click "Clear All Selected"
@@ -23,3 +23,60 @@ Case 2:
 5) Fill genre checkbox
 6) In pop-up click "Update All"
 ER: pop-up closes, page refreshes and contains articles about the selected genre
+
+Case 3:
+1) Open https://pitchfork.com/
+2) Click Search button
+3) Enter "Kanye"
+ER: suggests opens, which have a category. Category Artists has text "Kanye West" first in the array
+
+Case 4:
+1) Open https://pitchfork.com/
+2) Click Search button
+3) Enter "Kanye"
+4) Click "Kanye West" in category Artists from suggests
+ER: opens page about rapper Kanye West
+
+Case 5:
+1) Open https://pitchfork.com/
+2) Click Search button
+3) Enter in search "Yeesus"
+4) Press Enter
+ER: opens page with search result. In category Reviews there is article about album "Yeezus"
+
+Case 6:
+1) Open https://pitchfork.com/
+2) Click Search button
+3) Enter in search "Yeesus"
+4) Press Enter
+ER: opens page with search result. In category Reviews there is article about album "Yeezus"
+
+Case 7:
+1) Open https://pitchfork.com/
+2) Click Search button
+3) Enter in search "Yeesus"
+4) Press Enter
+ER: opens page with search result. In category Reviews there is article about album "Yeezus"
+
+Case 8:
+1) Open https://pitchfork.com/
+2) Click Search button
+3) Enter in search "SHXCXCHCXSH"
+4) Open in suggest first news in category SHXCXCHCXSH
+ER: article opens, article include tag SHXCXCHCXSH
+
+Case 9:
+1) Open https://pitchfork.com/
+2) Click Reviews on the top bar
+3) Open menu Best New Albums
+ER: open page, include header "Best new albums", red "best" label and list of albums
+
+Case 10:
+1) Open https://pitchfork.com/
+2) Click on burger
+3) Open UNDER THE INFLUENCES on Video category
+ER: page opens, page include video block
+
+
+
+

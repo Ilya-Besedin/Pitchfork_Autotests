@@ -1,12 +1,8 @@
 package pitchfork;
 
-import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -20,10 +16,13 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Selenide.$;
+import static io.qameta.allure.Allure.step;
+import static pitchfork.TestData.*;
 
-public class ParametrizedTestGenreFilter {
+public class ParametrizedTestGenreFilter extends TestBase {
 
     //locators
+    SelenideElement cookiePopup = $("#onetrust-button-group-parent");
     SelenideElement navBar = $("li.primary-nav__item");
     SelenideElement genreTrigger = $(".genre-menu__trigger");
     SelenideElement genreMenu = $(".genre-menu__hanging");
@@ -31,36 +30,38 @@ public class ParametrizedTestGenreFilter {
     ElementsCollection genreFilterNews = $$(".news-collection-fragment");
     ElementsCollection genreFilterTopNews = $$(".container-fluid");
 
-    @BeforeAll
-    static void browserConfig() {
-        Configuration.browserSize = "1280x800";
-        Configuration.pageLoadTimeout = 20000;
-        Configuration.pageLoadStrategy = "eager";
-    }
-
-    @BeforeEach
-    void precondition() {
-        open("https://pitchfork.com/");
-    }
-
-    @AfterEach
-    void closeBrowser() {
-        closeWebDriver();
-    }
-
-    @ValueSource(strings = {"Jazz", "Electronic", "Rap/Hip-Hop", "Metal"})
+    //Value Source tests checks genre tag in News
+    @Tag("smoke_test")
+    @ValueSource(strings = {"Jazz", "Metal", "Rap/Hip-Hop", "Electronic"})
     @ParameterizedTest(name = "Checking set \"{0}\" filter in News")
-    @Disabled
-        //@DisplayName("Checking genre filter in News") - mover to @ParameterizedTest
     void setGenreFilterTest(String genre) {
-        navBar.$("a").click();
-        genreTrigger.click();
-        genreMenu.$(".genre-menu__clear").click();
-        genreMenu.$(byText(genre)).click();
-        genreMenu.$(byText("Update Results")).click();
-        genreFilterList.shouldHave(text(genre));
+        step("On Nav bar click News", () -> {
+            cookiePopup.shouldBe(visible);
+            cookiePopup.$(byText("I Accept")).click();
+            navBar.shouldBe(visible);
+            navBar.$("a").click();
+        });
+
+        step("Click genre", () -> {
+            genreTrigger.click();
+        });
+
+        step("In pop-up click 'Clear All Selected'", () -> {
+            genreMenu.$(".genre-menu__clear").click();
+        });
+
+        step("Fill genre checkbox", () -> {
+            genreMenu.$(byText(genre)).click();
+        });
+
+        step("Check genre tag", () -> {
+            genreMenu.$(byText("Update Results")).click();
+            genreFilterList.shouldHave(text(genre));
+        });
     }
 
+    //CsvSource tests check articles in genre filtered news
+    @Tag("Regression_tests")
     @CsvSource(value = {
             "Jazz| Kamasi Washington Shares New Song “The Garden Path”: Listen",
             "Electronic| Watch LCD Soundsystem Perform “Thrills” and “Yr City’s a Sucker” on",
@@ -71,7 +72,6 @@ public class ParametrizedTestGenreFilter {
     )
     @ParameterizedTest(name = "Checking news list by \"{0}\" filter")
     @Disabled
-        //@DisplayName("Checking genre filter in News") - mover to @ParameterizedTest
     void checkGenreFilterContent(String genre, String expectedTest) {
         navBar.$("a").click();
         genreTrigger.click();
@@ -81,6 +81,7 @@ public class ParametrizedTestGenreFilter {
         genreFilterNews.findBy(text(expectedTest)).shouldBe(visible);
     }
 
+    //MethodSource tests check articles in genre filtered news
     static Stream<Arguments> testWithArgumentsData() {
         return Stream.of(
                 Arguments.of("Jazz", "Kamasi Washington Shares New Song “The Garden Path”: Listen", "Nubya Garcia Announces 2022 U.S. Tour"),
@@ -88,8 +89,10 @@ public class ParametrizedTestGenreFilter {
         );
     }
 
+    @Tag("Regression_tests")
     @MethodSource(value = "testWithArgumentsData") //can be written like @MethodSource ("testWithArgumentsData()"
     @ParameterizedTest
+    @Disabled
     void testWithArguments(String genre, String firstNews, String secondNews) {
         navBar.$("a").click();
         genreTrigger.click();
@@ -100,6 +103,3 @@ public class ParametrizedTestGenreFilter {
         genreFilterTopNews.findBy(text(secondNews)).shouldBe(visible);
     }
 }
-
-
-
