@@ -1,0 +1,17 @@
+  //use for debug on local machine instead of "extends TestBase"
+    
+    @BeforeAll
+    static void browserConfig() {
+        Configuration.browserSize = "1280x800";
+        Configuration.pageLoadStrategy = "none";
+    }
+
+    @BeforeEach
+    void precondition() {
+        open("https://pitchfork.com/");
+    }
+
+    @AfterEach
+    void closeBrowser() {
+        closeWebDriver();
+    }

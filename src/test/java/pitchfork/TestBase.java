@@ -20,11 +20,11 @@ public class TestBase {
     static void setUp() {
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
 
-        step("Настроить тестируемую страницу", () -> {
+        step("Setup testing page", () -> {
             Configuration.baseUrl = "https://pitchfork.com/";
             Configuration.browser = System.getProperty("browser", "chrome");
 
-            String browserSize = getProperty("browserSize", "1280x800");
+            String browserSize = getProperty("browserSize", "1920x1080");
             Configuration.browserSize = browserSize;
             Configuration.pageLoadStrategy = "none";
 
@@ -43,7 +43,9 @@ public class TestBase {
 
     @BeforeEach
     void precondition() {
-        open("https://pitchfork.com/");
+        step("Open testing page", () -> {
+            open("https://pitchfork.com/");
+        });
     }
 
     @AfterEach
