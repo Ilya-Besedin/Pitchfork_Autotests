@@ -1,6 +1,7 @@
 package pitchfork;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -29,7 +30,7 @@ public class ParametrizedTestGenreFilter extends TestBase {
     SelenideElement genreFilterTopNews = $(".article-details"); //there checks only first article in the top
 
     //Value Source tests checks genre tag in News
-    @Tag("smoke_test")
+    @Tag("smoke test")
     @ValueSource(strings = {"Jazz", "Metal", "Rap/Hip-Hop", "Electronic"})
     @ParameterizedTest(name = "Checking set \"{0}\" filter in News")
     void setGenreFilterTest(String genre) {
@@ -58,12 +59,11 @@ public class ParametrizedTestGenreFilter extends TestBase {
     }
 
     //CsvSource tests check articles in genre filtered news
-    @Tag("regression_test")
+    //All those tests will fail baceuse all genre news is not actual
+    @Tag("regression test")
     @CsvSource(value = {
             "Jazz| Sun Ra House in Philadelphia Is Now a Historic Landmark",
             "Electronic| Watch LCD Soundsystem Perform “Thrills” and “Yr City’s a Sucker” on",
-            "Rap/Hip-Hop| Dave Shares Video for New Song “Starlight”: Watch",
-            "Metal| Rage Against the Machine Delay Start of Reunion Tour",
     },
             delimiter = '|' //change separator ',' to '|'
     )
@@ -79,6 +79,7 @@ public class ParametrizedTestGenreFilter extends TestBase {
     }
 
     //MethodSource tests check articles in genre filtered news
+    //This test doubles CsvSource test, but use variables, which set up in TestData
     static Stream<Arguments> testWithArgumentsData() {
         return Stream.of(
                 Arguments.of(genre_one, genre_one_news, genre_one_top_news),
@@ -86,7 +87,7 @@ public class ParametrizedTestGenreFilter extends TestBase {
         );
     }
 
-    @Tag("regression_test")
+    @Tag("regression test")
     @MethodSource(value = "testWithArgumentsData") //can be written like @MethodSource ("testWithArgumentsData()"
     @ParameterizedTest
     void testWithArguments(String genre, String firstNews, String secondNews) {

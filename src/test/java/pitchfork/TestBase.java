@@ -3,10 +3,12 @@ package pitchfork;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import helpers.Attach;
+import io.qameta.allure.*;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
@@ -15,6 +17,19 @@ import static io.qameta.allure.Allure.step;
 import static java.lang.System.getProperty;
 
 public class TestBase {
+
+    @Owner("IBesedin")
+    @Severity(value = SeverityLevel.CRITICAL)
+    @Story("Filters on news and search on main page")
+    @DisplayName("Checking filters and search")
+    @Description("Запуск в Jenkins clean\n" +
+            "test\n" +
+            "-Dbrowser=${BROWSER}\n" +
+            "-DbrowserSize=${BROWSER_SIZE}\n" +
+            "-DremoteBrowser=${REMOTE_BROWSER}\n" +
+            "-Duser=${USER}\n" +
+            "-Dpassword=${PASSWORD}")
+    @Link(url = "https://pitchfork.com/")
 
     @BeforeAll
     static void setUp() {
