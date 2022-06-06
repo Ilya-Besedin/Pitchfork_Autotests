@@ -1,7 +1,6 @@
 package pitchfork;
 
 import com.codeborne.selenide.SelenideElement;
-import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
